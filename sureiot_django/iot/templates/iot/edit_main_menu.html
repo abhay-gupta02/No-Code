@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Main Menu</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@clr/ui/clr-ui.min.css">
+</head>
+<body>
+    <div class="content-area">
+        <h2>Edit Main Menu</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label>Menu Name:</label>
+            <input type="text" name="menu_name" value="{{ menu.menu_name }}" required>
+            <label>Menu URL:</label>
+            <input type="text" name="menu_url" value="{{ menu.menu_url }}">
+            <label>Display Order:</label>
+            <input type="number" name="display_order" value="{{ menu.display_order }}" required>
+            <label>Active:</label>
+            <input type="checkbox" name="is_active" {% if menu.is_active %}checked{% endif %}>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</body>
+</html>

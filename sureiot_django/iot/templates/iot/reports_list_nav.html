@@ -1,0 +1,119 @@
+{% load static %}
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>CloudnSure</h2>
+    <ul>
+        <li>Transactions</li>
+        <li>Masters</li>
+    </ul>
+</div>
+
+<!-- Top Navbar -->
+<div class="navbar">
+    <div class="logo">
+        <img src="https://via.placeholder.com/40" alt="Logo" />
+    </div>
+    <div class="user">
+        Super Admin
+    </div>
+</div>
+
+<!-- Top Navigation -->
+<div class="top-nav">
+    <h3>All Reports</h3>
+    <div class="user">sysadmin</div>
+</div>
+
+<style>
+    /* General Styling */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 220px;
+        height: 100vh;
+        background: #eceff1;
+        padding: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
+    }
+
+    .sidebar h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar ul li {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .sidebar ul li:hover {
+        background: #d6dadd;
+    }
+
+    /* Navbar */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: #0d3a58;
+        color: #fff;
+        position: fixed;
+        top: 0;
+        left: 220px;
+        right: 0;
+        height: 50px;
+        z-index: 1000;
+    }
+
+    .navbar .logo img {
+        width: 40px;
+    }
+
+    .navbar .user {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+        display: flex;
+        justify-content: space-between;
+        background: #3b3e3f;
+        padding: 15px 20px;
+        color: white;
+        align-items: center;
+        position: fixed;
+        top: 50px;
+        left: 220px;
+        right: 0;
+        z-index: 999;
+    }
+
+    /* Adjust main content to avoid navbar overlap */
+    .main-content-wrapper {
+        padding-top: 160px; /* Increased more */
+        padding-bottom: 40px; /* Added bottom padding */
+        margin-left: 220px; /* Space for sidebar */
+        padding: 30px;
+    }
+</style>

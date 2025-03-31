@@ -1,0 +1,49 @@
+
+
+{% block content %}
+<ol class="breadcrumb breadcrumb-arrow font-trirong">
+    <li><a href="#"><clr-icon shape="home"></clr-icon></a></li>
+    <li><a href="#"><clr-icon shape="lock"></clr-icon>Security</a></li>
+    <li><a href="#">Menu Maintenance</a></li>
+    <li><a href="#">Sub Menu</a></li>
+</ol>
+
+<div class="clr-row" style="margin-top: 15px;">
+  <div class="clr-col-8">
+    <h3 style="font-weight: 300;display: inline;">Sub-Menu Maintenance </h3>
+    <span class="label label-light-blue" style="display: inline;margin-left: 30px;">Sub Menu</span><br>
+  </div>
+  <div class="clr-col-4" style="text-align: right;">
+    <a href="{% url 'add_sub_menu' %}" class="btn btn-primary">
+      <clr-icon shape="plus"></clr-icon>ADD New
+    </a>
+  </div>
+</div>
+
+<clr-datagrid>
+    <clr-dg-column>NO.</clr-dg-column>
+    <clr-dg-column>Sub-Menu Item Name</clr-dg-column>
+    <clr-dg-column>ID</clr-dg-column>
+    <clr-dg-column>Sequence</clr-dg-column>
+    <clr-dg-column>Module Name</clr-dg-column>
+    <clr-dg-column>Menu Action Link</clr-dg-column>
+    <clr-dg-column>Status</clr-dg-column>
+    <clr-dg-column>Actions</clr-dg-column>
+
+    {% for submenu in sub_menus %}
+    <clr-dg-row>
+        <clr-dg-cell>{{ forloop.counter }}</clr-dg-cell>
+        <clr-dg-cell>{{ submenu.menu_item_desc }}</clr-dg-cell>
+        <clr-dg-cell>{{ submenu.menu_id }}</clr-dg-cell>
+        <clr-dg-cell>{{ submenu.item_seq }}</clr-dg-cell>
+        <clr-dg-cell>{{ submenu.module_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ submenu.main_menu_action_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ submenu.status }}</clr-dg-cell>
+        <clr-dg-cell>
+            <a href="{% url 'edit_sub_menu' submenu.id %}" class="btn btn-outline-primary">Edit</a>
+            <a href="{% url 'delete_sub_menu' submenu.id %}" class="btn btn-outline-danger">Delete</a>
+        </clr-dg-cell>
+    </clr-dg-row>
+    {% endfor %}
+</clr-datagrid>
+{% endblock %}

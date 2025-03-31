@@ -1,0 +1,24 @@
+
+
+{% block content %}
+<h3>Edit User Group</h3>
+<form method="post">
+  {% csrf_token %}
+  <label>Group Name:</label>
+  <input type="text" name="name" value="{{ group.name }}" required>
+  
+  <label>Description:</label>
+  <input type="text" name="description" value="{{ group.description }}">
+
+  <label>Group Level:</label>
+  <input type="number" name="level" value="{{ group.level }}" required>
+
+  <label>Status:</label>
+  <select name="status">
+    <option value="Enable" {% if group.status == "Enable" %}selected{% endif %}>Enable</option>
+    <option value="Disable" {% if group.status == "Disable" %}selected{% endif %}>Disable</option>
+  </select>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}

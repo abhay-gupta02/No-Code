@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clarity-ui/5.5.0/clarity-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <li><a href="{% url 'menu_maintenance_list' %}">Menu Maintenance</a></li>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 60px;
+            background-color: #424242;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            transition: width 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+        }
+        .sidebar.expanded {
+            width: 250px;
+            align-items: flex-start;
+        }
+        .main-content {
+            flex-grow: 1;
+        }
+        .navbar {
+            background-color: #03396c;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            color: white;
+            justify-content: space-between;
+        }
+        .dashboard-container {
+            padding: 20px;
+        }
+        .card-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        .card {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            color: white;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        .purple-card { background: #6a1b9a; }
+        .gray-card { background: #616161; }
+        .red-card { background: #b71c1c; }
+        .chart-container {
+            width: calc((100% / 3) * 2 + 15px); 
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .chart-box {
+            flex: 1;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            min-height: 100px;
+        }
+        .chart-box canvas {
+            max-width: 150px;
+            max-height: 150px;
+            margin: 0 auto;
+        }
+        .activities-section {
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #03396c;
+        }
+        .tab-header {
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .tab-header div {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .tab-header .active {
+            background-color: #03396c;
+            color: white;
+        }
+        .tab-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .tab-content ul li {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            width: 100%;
+            display: none;
+        }
+        .sidebar.expanded ul {
+            display: block;
+        }
+        .sidebar li {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .sidebar li:hover {
+            background-color: #555;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .card h4 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .card p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .chart-box h4 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button class="toggle-btn" onclick="toggleSidebar()">&gt;&gt;</button>
+        <ul>
+            <li><i class="fas fa-home"></i> Home</li>
+            <li><i class="fas fa-folder"></i> Projects</li>
+            <li><i class="fas fa-chart-bar"></i> Reports</li>
+            <li><i class="fas fa-cog"></i> Settings</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="navbar">
+            <h2>Dashboard</h2>
+            <div class="profile">
+                <span>Super Admin</span>
+            </div>
+        </div>
+        <div class="dashboard-container">
+            <div class="card-container">
+                <div class="card purple-card"><h4>My Projects</h4><p>98</p></div>
+                <div class="card gray-card"><h4>Shared With Me</h4><p>11</p></div>
+                <div class="card red-card"><h4>All Projects</h4><p>0</p></div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-box">
+                    <h4>Status</h4>
+                    <canvas id="chart-status"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h4>Tasks</h4>
+                    <canvas id="chart-tasks"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h4>Project Count</h4>
+                    <canvas id="chart-project"></canvas>
+                </div>
+            </div>
+            <div class="activities-section">
+                <div class="tab-header">
+                    <div class="active">Activities</div>
+                    <div>Suggestions For You</div>
+                </div>
+                <div class="tab-content">
+                    <ul>
+                        <li><strong>Project Alpha:</strong> Task completed by John Doe <span style="float:right;">2 hours ago</span></li>
+                        <li><strong>Project Beta:</strong> New comment added <span style="float:right;">4 hours ago</span></li>
+                        <li><strong>Project Gamma:</strong> Deadline approaching <span style="float:right;">1 day ago</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

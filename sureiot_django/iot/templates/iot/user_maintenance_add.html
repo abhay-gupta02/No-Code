@@ -1,0 +1,24 @@
+
+
+{% block content %}
+<h3>Add User Group</h3>
+<form method="post">
+  {% csrf_token %}
+  <label>Group Name:</label>
+  <input type="text" name="name" required>
+  
+  <label>Description:</label>
+  <input type="text" name="description">
+
+  <label>Group Level:</label>
+  <input type="number" name="level" required>
+
+  <label>Status:</label>
+  <select name="status">
+    <option value="Enable">Enable</option>
+    <option value="Disable">Disable</option>
+  </select>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% block content %}
+
+<!-- Include navbar and sidebar -->
+{% include 'iot/reports_list_nav.html' %}
+
+<!-- Main Content Wrapper -->
+<div class="main-content-wrapper">
+    <div class="content-container">
+        <ol class="breadcrumb breadcrumb-arrow font-trirong">
+            <li><a href="{% url 'dashboard' %}"><clr-icon shape="home"></clr-icon></a></li>
+            <li><a href="#">Report Builder</a></li>
+        </ol>
+        <br>
+
+        <div class="dg-wrapper">
+            <div class="clr-row">
+                <div class="clr-col-4">
+                    <h3><b>Report</b></h3>
+                </div>
+                <div class="clr-col-8" style="text-align: right;">
+                    <button id="add" class="btn btn-primary">+ ADD</button>
+                    <button id="report-runner" class="btn btn-secondary">REPORT RUNNER</button>
+                </div>
+            </div>
+            <br>
+            <table class="clr-table">
+                <thead>
+                    <tr>
+                        <th>Go To</th>
+                        <th>Report Name</th>
+                        <th>Report Description</th>
+                        <th>Active</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><button class="btn btn-sm btn-primary">SET UP</button></td>
+                        <td>Test</td>
+                        <td>Test</td>
+                        <td>True</td>
+                        <td></td>
+                        <td><clr-icon shape="trash"></clr-icon></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <button class="btn btn-outline">Manage Columns</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .content-container {
+        background: white;
+        padding: 25px; /* Increased padding */
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .clr-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .clr-table th, .clr-table td {
+        padding: 12px; /* More padding for better spacing */
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .clr-table th {
+        background-color: #f4f4f4;
+    }
+
+    /* Ensure report builder page has enough spacing */
+    .main-content-wrapper {
+        padding-top: 160px; /* Further increased */
+        padding-bottom: 40px;
+        margin-left: 220px;
+        padding: 35px;
+    }
+
+    /* Button spacing */
+    .btn {
+        margin-right: 10px;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Maintenance</title>
+  <style>
+    /* CSS Styles */
+    input[type=text], [type=date], [type=password] {
+      width: 100%;
+      padding: 15px 20px;
+      background-color: rgb(255, 255, 255);
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .required-field {
+      color: red;
+      font-size: 18px;
+    }
+
+    .green {
+      background-color: rgb(156, 231, 156);
+      color: black;
+    }
+
+    .blue {
+      background-color: #57abcf;
+      color: black;
+    }
+
+    .error_mess {
+      color: red;
+    }
+
+    .td-title {
+      text-align: center;
+      width: 150px;
+      color: white;
+      font-weight: bold;
+      background-color: rgba(63, 122, 231, 0.863);
+    }
+
+    th {
+      font-weight: bold;
+    }
+
+    .td-content {
+      text-align: left;
+    }
+
+    .delete, .heading {
+      text-align: center;
+      color: red;
+    }
+
+    .section p {
+      background-color: rgb(206, 201, 201);
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    select {
+      width: 100%;
+      padding: 5px 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <ol class="breadcrumb breadcrumb-arrow font-trirong">
+    <li><a href="javascript://" onclick="navigateTo('/cns-portal/dashboard/order')"><clr-icon shape="home"></clr-icon></a></li>
+    <li><a href="javascript://"><clr-icon shape="lock"></clr-icon>Security</a></li>
+    <li><a href="javascript://">Menu Maintenance</a></li>
+  </ol>
+
+  <div class="clr-row" style="margin-top: 15px;">
+    <div class="clr-col">
+      <h3 style="font-weight: 300;display: inline;">Menu Maintenance</h3>
+      <span class="label label-light-blue" style="display: inline;margin-left: 30px;">Main Menu</span><br>
+    </div>
+
+    <div class="clr-col" style="text-align: right;">
+      <div class="btn-group">
+        <button class="btn text-dark" onclick="downloadFiles()"><b>DOWNLOAD TEMPLATE</b></button>
+      </div>
+      <button class="btn btn-primary" onclick="csvImport()">IMPORT</button>
+      <button class="btn btn-outline" onclick="onExport()">
+        <clr-icon shape="export"></clr-icon> xlsx
+      </button>
+      <button id="add" class="btn btn-primary" onclick="goToAdd()">
+        <clr-icon shape="plus"></clr-icon>ADD
+      </button>
+    </div>
+  </div>
+
+  <div id="datagrid">
+    <!-- DataGrid content will be dynamically populated by JavaScript -->
+  </div>
+
+  <!-- Modals -->
+  <div id="modalAdd" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Add Menu Maintenance</h3>
+      <form id="addForm" onsubmit="onSubmit(event)">
+        <div class="clr-row">
+          <div class="clr-col-sm-12">
+            <label for="menuId">Menu ID<span class="required-field">*</span></label>
+            <input type="text" id="menuId" name="menuId" readonly>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="menuItemDesc">Menu Item Name<span class="required-field">*</span></label>
+            <input type="text" id="menuItemDesc" name="menuItemDesc" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="itemSeq">Sequence</label>
+            <input type="text" id="itemSeq" name="itemSeq" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="moduleName">Module Name</label>
+            <input type="text" id="moduleName" name="moduleName" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+              <option value="Enable">Enable</option>
+              <option value="Disable">Disable</option>
+            </select>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="main_menu_action_name">Menu Action Link</label>
+            <input type="text" id="main_menu_action_name" name="main_menu_action_name" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="main_menu_icon_name">Menu Icon Name</label>
+            <input type="text" id="main_menu_icon_name" name="main_menu_icon_name" required>
+          </div>
+        </div>
+        <br>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modalAdd')">Cancel</button>
+          <button type="submit" class="btn btn-primary">ADD</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalDelete" class="modal">
+    <div class="modal-content">
+      <h1 class="delete">Are You Sure Want to delete?</h1>
+      <h2 class="heading" id="deleteItemId"></h2>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalDelete')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="deleteItem()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalEdit" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Update Menu Maintenance</h3>
+      <form id="editForm" onsubmit="onUpdate(event)">
+        <div class="clr-row">
+          <div class="clr-col-sm-12">
+            <label for="editMenuId">Menu ID<span class="required-field">*</span></label>
+            <input type="text" id="editMenuId" name="menuId" readonly>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="editMenuItemDesc">Menu Item Name<span class="required-field">*</span></label>
+            <input type="text" id="editMenuItemDesc" name="menuItemDesc" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="editItemSeq">Sequence</label>
+            <input type="text" id="editItemSeq" name="itemSeq" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="editModuleName">Module Name</label>
+            <input type="text" id="editModuleName" name="moduleName" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="editStatus">Status</label>
+            <select id="editStatus" name="status" required>
+              <option value="Enable">Enable</option>
+              <option value="Disable">Disable</option>
+            </select>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="editMainMenuActionName">Menu Action Link</label>
+            <input type="text" id="editMainMenuActionName" name="main_menu_action_name" required>
+          </div>
+          <div class="clr-col-sm-12">
+            <label for="editMainMenuIconName">Menu Icon Name</label>
+            <input type="text" id="editMainMenuIconName" name="main_menu_icon_name" required>
+          </div>
+        </div>
+        <br>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modalEdit')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalCsv" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Import File</h3>
+      <div class="modal-body">
+        <input type="file" id="csvFile" name="file" class="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" onclick="saveCsv()">Import</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript Code
+    let menus = [];
+    let selectedItem = null;
+
+    // Fetch data from Django backend
+    function fetchData() {
+      fetch('/api/menus/')
+        .then(response => response.json())
+        .then(data => {
+          menus = data;
+          renderDataGrid();
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+    // Render DataGrid
+    function renderDataGrid() {
+      const datagrid = document.getElementById('datagrid');
+      datagrid.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>NO.</th>
+              <th>Menu Item Name</th>
+              <th>ID</th>
+              <th>Sequence</th>
+              <th>Module Name</th>
+              <th>Menu Action Link</th>
+              <th>Status</th>
+              <th>Sub Menu</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${menus.map((menu, index) => `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${menu.menuItemDesc}</td>
+                <td>${menu.menuId}</td>
+                <td>${menu.itemSeq}</td>
+                <td>${menu.moduleName}</td>
+                <td>${menu.main_menu_action_name}</td>
+                <td>${menu.status}</td>
+                <td><clr-icon shape="bullet-list" onclick="submenu(${menu.menuItemId})" style="color: rgb(108, 108, 194);"></clr-icon></td>
+                <td>
+                  <span style="cursor: pointer;"><clr-icon shape="edit" onclick="goToEdit(${menu.menuItemId})" style="color:red;"></clr-icon></span>
+                  <span style="cursor: pointer;"><clr-icon shape="trash" onclick="onDelete(${menu.menuItemId})" style="color:red;"></clr-icon></span>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    // Open modal
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+    }
+
+    // Close modal
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Add new item
+    function onSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      fetch('/api/menus/', {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(response => response.json())
+        .then(data => {
+          fetchData();
+          closeModal('modalAdd');
+        })
+        .catch(error => console.error('Error adding item:', error));
+    }
+
+    // Delete item
+    function deleteItem() {
+      fetch(`/api/menus/${selectedItem}/`, {
+        method: 'DELETE'
+      })
+        .then(() => {
+          fetchData();
+          closeModal('modalDelete');
+        })
+        .catch(error => console.error('Error deleting item:', error));
+    }
+
+    // Fetch data on page load
+    fetchData();
+  </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQL Worksheet</title>
+    <link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 60px;
+            background-color: #424242;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            transition: width 0.3s;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+        }
+        .sidebar.expanded {
+            width: 250px;
+            align-items: flex-start;
+        }
+        .main-content {
+            flex-grow: 1;
+            margin-left: 60px;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #03396c;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            color: white;
+            justify-content: space-between;
+            position: fixed;
+            width: calc(100% - 60px);
+            top: 0;
+            left: 60px;
+            z-index: 1000;
+        }
+        .container {
+            margin-top: 80px;
+        }
+        .form-row {
+            display: block; /* Stack form groups vertically */
+        }
+        .form-group-wrapper {
+            display: flex; /* Use flexbox to align form group and button */
+            align-items: flex-end; /* Align items at the bottom */
+            margin-bottom: 15px; /* Space between each form group and button pair */
+        }
+        .form-group {
+            width: 20%; /* Set width of form group */
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .btn-group {
+            margin-left: 10px; /* Space between form group and button */
+        }
+        .btn-group button {
+            background: #ccc;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+        }
+        .btn-group button:hover {
+            background: #bbb;
+        }
+        @media (max-width: 800px) {
+            .form-row {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="toggle-btn" onclick="toggleSidebar()">&gt;&gt;</button>
+        <ul>
+            <li><i class="fas fa-home"></i> Home</li>
+            <li><i class="fas fa-folder"></i> Projects</li>
+            <li><i class="fas fa-chart-bar"></i> Reports</li>
+            <li><i class="fas fa-cog"></i> Settings</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Navbar from Dashboard with CloudSure and other logos -->
+        <div class="navbar">
+            <div class="logo">
+                <img src="path/to/cloudsure-logo.png" alt="CloudSure" style="height: 30px;">
+                <span>CloudSure</span>
+            </div>
+            <div class="profile">
+                <span>Super Admin</span>
+            </div>
+        </div>
+
+        <!-- SQL Worksheet with Labels Above Boxes -->
+        <div class="container">
+            <h2>
+                SQL Worksheet - connection name
+                <button style="margin-left: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 5px 10px;">Switch</button>
+                <button style="background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 5px 10px;">Add New</button>
+            </h2>
+
+            <div class="form-row">
+                <!-- Table List -->
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="table_list">Table List</label>
+                        <select name="table_list" id="table_list"></select>
+                    </div>
+                    <div class="btn-group">
+                        <button>X</button>
+                    </div>
+                </div>
+
+                <!-- Column List -->
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="column_list">Column List</label>
+                        <select name="column_list" id="column_list"></select>
+                    </div>
+                    <div class="btn-group">
+                        <button>X</button>
+                    </div>
+                </div>
+
+                <!-- Condition List -->
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="condition_list">Condition List</label>
+                        <select name="condition_list" id="condition_list"></select>
+                    </div>
+                    <div class="btn-group">
+                        <button>▼</button>
+                    </div>
+                </div>
+
+                <!-- Parameter List -->
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="parameter_list">Parameter List</label>
+                        <select name="parameter_list" id="parameter_list"></select>
+                    </div>
+                    <div class="btn-group">
+                        <button>X</button>
+                    </div>
+                </div>
+
+                <!-- Folder Name -->
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="folder_name">Folder Name</label>
+                        <input type="text" name="folder_name" id="folder_name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

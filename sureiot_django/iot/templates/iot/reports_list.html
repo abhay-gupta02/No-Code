@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports List</title>
+    <link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            padding: 20px;
+        }
+        .content-container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background: #f1f1f1;
+            color: #555;
+        }
+        .table tr:hover {
+            background: #f9f9f9;
+        }
+        .actions-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .actions-menu a {
+            display: block;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        .actions-menu a:hover {
+            background: #f5f5f5;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            z-index: 1000;
+            border-radius: 8px;
+        }
+        .popup h4 {
+            margin: 0 0 10px 0;
+        }
+    </style>
+    <script>
+        function toggleMenu(id) {
+            document.querySelectorAll('.actions-menu').forEach(menu => menu.style.display = 'none');
+            var menu = document.getElementById(id);
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        function toggleManageColumns() {
+            var popup = document.getElementById("manage-columns-popup");
+            popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+<body>
+    <div class="content-container">
+        <h1>Report</h1>
+        <a href="{% url 'report_runner_add' %}" class="btn btn-primary">+ ADD REPORT RUNNER</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Go To</th>
+                    <th>Report Name</th>
+                    <th>Report Description</th>
+                    <th>Active</th>
+                    <th>Folder Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td><a href="#">SET UP</a></td>
+                    <td>{{ report.name }}</td>
+                    <td>{{ report.description }}</td>
+                    <td>{{ report.status }}</td>
+                    <td>{{ report.folder_name|default:"" }}</td>
+                    <td>
+                        <button onclick="toggleMenu('menu-{{ report.id }}')">:</button>
+                        <div class="actions-menu" id="menu-{{ report.id }}">
+                            <a href="{% url 'report_edit' report.id %}">Edit</a>
+                            <a href="{% url 'report_delete' report.id %}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6">No reports found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Manage Columns Popup -->
+        <a href="#" onclick="toggleManageColumns()">Manage Columns</a>
+        <div id="manage-columns-popup" class="popup">
+            <h4>Manage Columns</h4>
+            <label><input type="checkbox" checked> Report Name</label>
+            <label><input type="checkbox" checked> Report Description</label>
+            <label><input type="checkbox" checked> Active</label>
+            <label><input type="checkbox" checked> Folder Name</label>
+            <button onclick="toggleManageColumns()">Close</button>
+        </div>
+    </div>
+</body>
+</html>

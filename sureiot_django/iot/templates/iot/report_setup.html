@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>REPORT SET UP - Project Details Report (116)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clarity-ui/5.5.0/clarity-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 60px;
+            background-color: #424242;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            transition: width 0.3s;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+        }
+        .sidebar.expanded {
+            width: 250px;
+            align-items: flex-start;
+        }
+        .main-content {
+            flex-grow: 1;
+            margin-left: 60px;
+        }
+        .navbar {
+            background-color: #03396c;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            color: white;
+            justify-content: space-between;
+            position: fixed;
+            width: calc(100% - 60px);
+            top: 0;
+            left: 60px;
+            z-index: 1000;
+        }
+        .container {
+            padding: 20px;
+            margin-top: 80px; /* Adjusted for navbar */
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: inline-block;
+            width: 20%;
+        }
+        .form-group label {
+            display: block;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .dropdown {
+            width: 200px;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buttons button:hover {
+            background-color: #0056b3;
+        }
+        .switch-container {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 20px;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            width: 100%;
+            display: none;
+        }
+        .sidebar.expanded ul {
+            display: block;
+        }
+        .sidebar li {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .sidebar li:hover {
+            background-color: #555;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="toggle-btn" onclick="toggleSidebar()">&gt;&gt;</button>
+        <ul>
+            <li><i class="fas fa-home"></i> Home</li>
+            <li><i class="fas fa-folder"></i> Projects</li>
+            <li><i class="fas fa-chart-bar"></i> Reports</li>
+            <li><i class="fas fa-cog"></i> Settings</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Navbar -->
+        <div class="navbar">
+            <h2>Dashboard</h2>
+            <div class="profile">
+                <span>Super Admin</span>
+            </div>
+        </div>
+
+        <!-- Your Existing Content -->
+        <div class="container">
+            <h2>REPORT SET UP - Project Details Report (116) <button>Edit Mode</button></h2>
+
+            <div class="form-group">
+                <label for="get-url">Get URL</label>
+                <input type="text" id="get-url" placeholder="http://example.com">
+                <div class="error-message" id="url-error">Invalid URL. Please enter the correct URL.</div>
+            </div>
+
+            <div class="form-group switch-container">
+                <label for="date-filter">Include Date Filter</label>
+                <input type="checkbox" id="date-filter">
+            </div>
+
+            <div class="form-group">
+                <label for="list">List</label>
+                <select id="list">
+                    <option value="">Choose from list</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="standard-parameters">Standard Parameters</label>
+                <select id="standard-parameters" class="dropdown" disabled>
+                    <option value="">Select Parameter</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button>BACK</button>
+                <button>UPDATE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Sidebar Function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('expanded');
+        }
+
+        // URL Validation and Fetch Logic
+        const CORRECT_URL = "http://example.com";
+        const urlInput = document.getElementById('get-url');
+        const standardParametersDropdown = document.getElementById('standard-parameters');
+        const urlError = document.getElementById('url-error');
+
+        urlInput.addEventListener('input', function () {
+            const enteredUrl = urlInput.value.trim();
+            if (enteredUrl === CORRECT_URL) {
+                standardParametersDropdown.disabled = false;
+                urlError.style.display = 'none';
+            } else {
+                standardParametersDropdown.disabled = true;
+                urlError.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
