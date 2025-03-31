@@ -9,3 +9,5 @@ admin.site.register(Project)
 admin.site.register(Activity)
 admin.site.register(Report)
 admin.site.register(UserGroup)
+
+#random text
